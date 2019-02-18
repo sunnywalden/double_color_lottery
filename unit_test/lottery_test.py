@@ -1,4 +1,4 @@
-#!venv/bin/python
+#!/bin/python
 # -*- coding:utf-8 -*-
 
 import unittest

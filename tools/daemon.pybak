@@ -53,7 +53,7 @@ class Daemon(object):
         self.use_eventlet = use_eventlet
 
     def log(self, *args):
-        # if self.verbose >= 1:
+        if self.verbose >= 1:
             print(*args)
 
     def daemonize(self):
@@ -67,7 +67,6 @@ class Daemon(object):
             eventlet.tpool.killall()
         try:
             pid = os.fork()
-            self.log('Debug pid in first fork: %s' % pid)
             if pid > 0:
                 # Exit first parent
                 sys.exit(0)
@@ -78,29 +77,24 @@ class Daemon(object):
 
         # Decouple from parent environment
         os.chdir(self.home_dir)
-        self.log(os.getcwd())
         os.setsid()
         os.umask(self.umask)
 
         # Do second fork
         try:
             pid = os.fork()
-            self.log('Debug pid in second fork: %s' % pid)
             if pid > 0:
                 # Exit from second parent
                 sys.exit(0)
         except OSError as e:
-            self.log("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.stderr.write(
                 "fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
 
         if sys.platform != 'darwin':  # This block breaks on OS X
             # Redirect standard file descriptors
-            self.log('Debug here')
             sys.stdout.flush()
             sys.stderr.flush()
-            self.log('debug standard input and output' % (self.stdin,self.stdout))
             si = open(self.stdin, 'r')
             so = open(self.stdout, 'a+')
             if self.stderr:
@@ -129,13 +123,19 @@ class Daemon(object):
             signal.signal(signal.SIGINT, sigtermhandler)
 
         self.log("Started")
+        print("Started")
 
         # Write pidfile
         atexit.register(
             self.delpid)  # Make sure pid file is removed if we quit
         pid = str(os.getpid())
+        print('Pid gotted is %s' % pid)
         open(self.pidfile, 'w+').write("%s\n" % pid)
-        self.log('Pid %s registered in pid file %s' % (pid, self.pidfile))
+        if os.path.exists(self.pidfile):
+            print('Pid file %s generated'% self.pidfile)
+        else:
+            print('Pid file %s generated failed'% self.pidfile)
+        # self.pid = pid
 
     def delpid(self):
         try:
@@ -155,25 +155,46 @@ class Daemon(object):
         """
 
         self.log("Starting...")
-
+        print("Starting...")
         # Check for a pidfile to see if the daemon already runs
-        try:
-            pf = open(self.pidfile, 'r')
-            pid = int(pf.read().strip())
-            pf.close()
-        except IOError:
-            self.log("Pid file not exists...")
+#         try:
+#             pf = open(self.pidfile, 'r')
+#             pid = int(pf.read().strip())
+#             pf.close()
+#         except IOError:
+#             pid = None
+#         except SystemExit:
+#             pid = None
+        if os.path.exists(self.pidfile):
+            try:
+                print('Pid file exists')
+                pf = open(self.pidfile, 'r')
+                pid = int(pf.read().strip())
+                pf.close()
+            except IOError:
+                pid = None
+            except SystemExit:
+                pid = None
+        else:
+            print('Pid file not exists')
             pid = None
-        except SystemExit:
-            pid = None
-
         if pid:
-            message = "pidfile %s already exists. Is it already running?\n"
-            sys.stderr.write(message % self.pidfile)
-            sys.exit(1)
+            if os.path.exists('/proc/%d' % pid):
+                self.log('Process (pid %d) is running...' % pid)
+                print('Process (pid %d) is running...' % pid)
+                sys.exit(1)
+
+#         if pid:
+#             if os.path.exists('/proc/%d' % pid):
+#                 self.log('Process (pid %d) is running...' % pid)
+#                 sys.exit(1)
+        # if pid:
+        #     message = "pidfile %s already exists. Is it already running?\n"
+        #     sys.stderr.write(message % self.pidfile)
+        #     sys.exit(1)
 
         # Start the daemon
-        self.log('Start the daemon')
+        print('Excurate daemon function')
         self.daemonize()
         self.run(*args, **kwargs)
 
@@ -229,7 +250,11 @@ class Daemon(object):
         try:
             pf = open(self.pidfile, 'r')
             pid = int(pf.read().strip())
+            print('Pid %s get from pid file %s' % (pid, self.pidfile))
             pf.close()
+            if not os.path.exists('/proc/%d' % pid):
+                pid = None
+            # pid = self.pid
         except IOError:
             pid = None
         except SystemExit:
@@ -237,17 +262,25 @@ class Daemon(object):
         return pid
 
     def is_running(self):
-        pid = self.get_pid()
-
-        if pid is None:
+        pid_exist = self.get_pid()
+        if pid_exist is None:
             self.log('Process is stopped')
             return False
-        elif os.path.exists('/proc/%d' % pid):
-            self.log('Process (pid %d) is running...' % pid)
+        else :
+            self.log('Process (pid %d) is running...')
             return True
-        else:
-            self.log('Process (pid %d) is killed' % pid)
-            return False
+        # pid = self.get_pid()
+        # # pid = self.pid
+        #
+        # if pid is None:
+        #     self.log('Process is stopped')
+        #     return False
+        # elif os.path.exists('/proc/%d' % pid):
+        #     self.log('Process (pid %d) is running...' % pid)
+        #     return True
+        # else:
+        #     self.log('Process (pid %d) is killed' % pid)
+        #     return False
 
     def run(self):
         """

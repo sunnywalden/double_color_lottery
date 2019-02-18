@@ -1,0 +1,43 @@
+*** Starting uWSGI 2.0.18 (64bit) on [Mon Feb 18 14:34:15 2019] ***
+compiled with version: 4.2.1 Compatible Apple LLVM 10.0.0 (clang-1000.10.44.2) on 18 February 2019 06:15:51
+os: Darwin-17.5.0 Darwin Kernel Version 17.5.0: Mon Mar  5 22:24:32 PST 2018; root:xnu-4570.51.1~1/RELEASE_X86_64
+nodename: zhangbo055559.local
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /Users/admin/PycharmProjects/double_color_lottery/bin
+detected binary path: /Users/admin/PycharmProjects/double_color_lottery/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 1418
+your memory page size is 4096 bytes
+detected max file descriptor number: 10240
+lock engine: OSX spinlocks
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 0.0.0.0:8081 fd 3
+Python version: 3.7.1 (default, Nov  6 2018, 18:45:35)  [Clang 10.0.0 (clang-1000.11.45.5)]
+Set PythonHome to /Users/admin/PycharmProjects/double_color_lottery/venv
+Python main interpreter initialized at 0x7fa03b4145c0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 333248 bytes (325 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x7fa03b4145c0 pid: 4031 (default app)
+mounting lottery:app on /lottery/api/v1/doublecolor
+WSGI app 1 (mountpoint='/lottery/api/v1/doublecolor') ready in 1 seconds on interpreter 0x7fa03d81a5f0 pid: 4031
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 4031, cores: 2)
+spawned uWSGI worker 2 (pid: 4032, cores: 2)
+spawned uWSGI worker 3 (pid: 4033, cores: 2)
+spawned uWSGI worker 4 (pid: 4034, cores: 2)
+invalid request block size: 21573 (max 4096)...skip
+invalid request block size: 21573 (max 4096)...skip
+Fatal Python error: PyInterpreterState_Delete: remaining subinterpreters
+
+Fatal Python error: PyInterpreterState_Delete: remaining subinterpreters
+
+Fatal Python error: PyInterpreterState_Delete: remaining subinterpreters
+
+Fatal Python error: PyInterpreterState_Delete: remaining subinterpreters
+

@@ -1,25 +1,32 @@
 # Use centos image as base image
-FROM centos:latest
+FROM centos/python-36-centos7:latest
 
 MAINTAINER SHUANGSELOTTERY Docker Maintainers "sunnywalden@gmil.com"
 
+ENV LOTTERY_PATH /opt/double_color_lottery
+
 # Set the working directory to /opt
-WORKDIR /opt/double_color_lottery
+WORKDIR $LOTTERY_PATH
 
 # Copy lottery release to work dir
-COPY . /opt/double_color_lottery
-#
-## Install any needed packages specified in requirements.txt
-#RUN venv/bin/pip install --trusted-host pypi.python.org -r requirements.txt
+COPY . $LOTTERY_PATH
 
-# Make port 80 available to the world outside this container
-EXPOSE 8080
+#ENV UPGRADE_PIP_TO_LATEST true
 
 # Define environment variable
-ENV PATH /opt/double_color_lottery/venv/bin:$PATH
+ENV PATH $LOTTERY_PATH/venv/bin:$PATH
 
-# Run app.py when the container launches
-ENTRYPOINT ["source", "venv/bin/activate"]
+# Update pip
+RUN pip install --upgrade pip
 
-CMD ["cd", "bin"]
-CMD ["python", "lottery.py"]
+## Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+USER root
+
+WORKDIR $LOTTERY_PATH/bin
+
+CMD ["uwsgi", "uwsgi.ini"]
