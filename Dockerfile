@@ -29,4 +29,6 @@ USER root
 
 WORKDIR $LOTTERY_PATH/bin
 
-CMD ["uwsgi", "uwsgi.ini"]
+#CMD ["uwsgi", "uwsgi.ini"]
+
+ENTRYPOINT ["uwsgi", "uwsgi.ini"]
