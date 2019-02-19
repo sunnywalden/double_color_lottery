@@ -20,7 +20,7 @@ app name: lottery
 
 ### Docker
 
-镜像地址： sunnywalden/shuangse-lottery:latest
+镜像地址： https://cloud.docker.com/repository/docker/sunnywalden/shuangse-lottery
 
 获取镜像: docker pull sunnywalden/shuangse-lottery:latest
 
