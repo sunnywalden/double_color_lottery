@@ -2,3 +2,4 @@ pid/*
 logs/*
 __pycache__
 venv/*
+*idea*
