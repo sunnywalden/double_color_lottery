@@ -15,7 +15,6 @@ app name: lottery
 双色球彩票生成器
 
 
-
 ## 部署
 
 ### Docker
