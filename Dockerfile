@@ -1,7 +1,7 @@
 # Use centos image as base image
 FROM centos/python-36-centos7:latest
 
-MAINTAINER SHUANGSELOTTERY Docker Maintainers "sunnywalden@gmil.com"
+MAINTAINER SHUANGSELOTTERY Docker Maintainers "sunnywalden@gmail.com"
 
 ENV LOTTERY_PATH /opt/double_color_lottery
 
