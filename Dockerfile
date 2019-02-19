@@ -11,8 +11,6 @@ WORKDIR $LOTTERY_PATH
 # Copy lottery release to work dir
 COPY . $LOTTERY_PATH
 
-#ENV UPGRADE_PIP_TO_LATEST true
-
 # Define environment variable
 ENV PATH $LOTTERY_PATH/venv/bin:$PATH
 
