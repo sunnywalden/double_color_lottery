@@ -15,10 +15,7 @@ COPY . $LOTTERY_PATH
 ENV PATH $LOTTERY_PATH/venv/bin:$PATH
 
 # Update pip
-RUN pip install --upgrade pip
-
-## Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
