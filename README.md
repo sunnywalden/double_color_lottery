@@ -1,4 +1,6 @@
 # double color lottery
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://github.com/hhyo/archery/blob/master/LICENSE)
  
 ## 依赖
 
